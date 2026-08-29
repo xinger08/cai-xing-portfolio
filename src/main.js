@@ -54,6 +54,31 @@ const resetBookcaseButton = document.querySelector('[data-bookcase-reset]');
 const confirmBookcaseButton = document.querySelector('[data-bookcase-confirm]');
 const copyBookcaseButton = document.querySelector('[data-bookcase-copy]');
 const bookcaseOutput = document.querySelector('[data-bookcase-output]');
+
+function installImageRecovery() {
+  const retryImage = (image) => {
+    if (!(image instanceof HTMLImageElement) || image.dataset.retryAttempted === 'true') return;
+    image.dataset.retryAttempted = 'true';
+    const failedSource = image.currentSrc || image.src;
+    if (!failedSource) return;
+    window.setTimeout(() => {
+      image.closest('picture')?.querySelectorAll('source').forEach((source) => source.remove());
+      const retryUrl = new URL(failedSource, window.location.href);
+      retryUrl.searchParams.set('retry', Date.now().toString(36));
+      image.src = retryUrl.href;
+    }, 650);
+  };
+
+  document.addEventListener('error', (event) => retryImage(event.target), true);
+  window.addEventListener('load', () => {
+    document.querySelectorAll('img').forEach((image) => {
+      if (image.complete && image.naturalWidth === 0) retryImage(image);
+    });
+  }, { once: true });
+}
+
+installImageRecovery();
+
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xf4f6f5);
 let cameraFillLight = null;
@@ -1656,14 +1681,26 @@ function addLights() {
 
 createBackdrop();
 addLights();
-addSceneToDisplay().then(() => {
-  renderer.shadowMap.needsUpdate = true;
-  window.requestAnimationFrame(() => {
-    renderer.shadowMap.autoUpdate = false;
-    setLoadingProgress(100, '场景加载完成');
-    window.setTimeout(() => loadingScreen?.classList.add('is-complete'), 260);
-  });
-});
+setLoadingProgress(18, '页面已就绪，3D场景将在后台加载');
+window.setTimeout(() => loadingScreen?.classList.add('is-complete'), 320);
+
+const startSceneLoading = () => {
+  window.setTimeout(() => {
+    addSceneToDisplay().then(() => {
+      renderer.shadowMap.needsUpdate = true;
+      window.requestAnimationFrame(() => {
+        renderer.shadowMap.autoUpdate = false;
+        setLoadingProgress(100, '场景加载完成');
+      });
+    });
+  }, 700);
+};
+
+if (document.readyState === 'complete') {
+  startSceneLoading();
+} else {
+  window.addEventListener('load', startSceneLoading, { once: true });
+}
 
 function setLoadingProgress(value, label) {
   const progress = THREE.MathUtils.clamp(Math.round(value), 0, 100);
