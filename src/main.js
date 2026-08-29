@@ -46,7 +46,7 @@ const copyAdjustButtons = [...document.querySelectorAll('[data-copy-adjust]')];
 const confirmCopyButton = document.querySelector('[data-copy-confirm]');
 const resetCopyButton = document.querySelector('[data-copy-reset]');
 const publicAsset = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
-const officeSceneModelPath = publicAsset('avatar-fullbody.optimized.glb');
+const officeSceneModelPath = publicAsset('avatar-fullbody.optimized.glb?v=20260829-2');
 const bookcaseModelPath = publicAsset('bookcase.optimized.glb');
 const bookcaseMoveButtons = [...document.querySelectorAll('[data-bookcase-move]')];
 const bookcaseStepButtons = [...document.querySelectorAll('[data-bookcase-step]')];
