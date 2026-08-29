@@ -46,8 +46,8 @@ const copyAdjustButtons = [...document.querySelectorAll('[data-copy-adjust]')];
 const confirmCopyButton = document.querySelector('[data-copy-confirm]');
 const resetCopyButton = document.querySelector('[data-copy-reset]');
 const publicAsset = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
-const officeSceneModelPath = publicAsset('avatar-fullbody.optimized.glb?v=20260829-2');
-const bookcaseModelPath = publicAsset('bookcase.optimized.glb');
+const officeSceneModelPath = publicAsset('office-avatar-v3.glb');
+const bookcaseModelPath = publicAsset('office-bookcase-v2.glb');
 const bookcaseMoveButtons = [...document.querySelectorAll('[data-bookcase-move]')];
 const bookcaseStepButtons = [...document.querySelectorAll('[data-bookcase-step]')];
 const resetBookcaseButton = document.querySelector('[data-bookcase-reset]');
@@ -1682,31 +1682,15 @@ async function addSceneToDisplay() {
   if (importedScene) {
     scene.add(importedScene);
     setLoadingProgress(72, '正在加载空间陈设');
-    await addBookcaseToScene();
-    applyCameraPreset(true);
-    return;
+  } else {
+    setLoadingProgress(72, '人物模型暂未加载');
   }
 
-  createPortfolioStudio();
   await addBookcaseToScene();
-  addAvatarToScene();
   applyCameraPreset(true);
 }
 
 async function loadImportedOfficeScene() {
-  try {
-    const response = await fetch(officeSceneModelPath, { method: 'HEAD' });
-    if (!response.ok) {
-      return null;
-    }
-    const contentType = response.headers.get('content-type') || '';
-    if (contentType.includes('text/html')) {
-      return null;
-    }
-  } catch {
-    return null;
-  }
-
   return new Promise((resolve) => {
     const loader = new GLTFLoader();
     loader.load(
@@ -1762,19 +1746,6 @@ async function addBookcaseToScene() {
 }
 
 async function loadImportedBookcase() {
-  try {
-    const response = await fetch(bookcaseModelPath, { method: 'HEAD' });
-    if (!response.ok) {
-      return null;
-    }
-    const contentType = response.headers.get('content-type') || '';
-    if (contentType.includes('text/html')) {
-      return null;
-    }
-  } catch {
-    return null;
-  }
-
   return new Promise((resolve) => {
     const loader = new GLTFLoader();
     loader.load(
