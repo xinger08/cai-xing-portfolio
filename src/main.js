@@ -21,7 +21,7 @@ const portfolioScreens = [...document.querySelectorAll('[data-portfolio-screen]'
 const portfolioPanel = document.querySelector('.portfolio-panel');
 const portfolioScreenButtons = [...document.querySelectorAll('[data-portfolio-target]')];
 const portfolioVideos = [...document.querySelectorAll('.portfolio-panel video')];
-const posterStacks = [...document.querySelectorAll('.poster-stack')];
+const posterGalleries = [...document.querySelectorAll('.poster-gallery')];
 const homepageScreens = [...document.querySelectorAll('[data-homepage-screen]')];
 const homepagePanel = document.querySelector('.homepage-panel');
 const homepageScreenButtons = [...document.querySelectorAll('[data-homepage-target]')];
@@ -35,7 +35,7 @@ const imageLightbox = document.querySelector('[data-image-lightbox]');
 const lightboxImage = document.querySelector('[data-lightbox-image]');
 const lightboxCaption = document.querySelector('[data-lightbox-caption]');
 const lightboxCloseButton = document.querySelector('[data-lightbox-close]');
-const lightboxTargets = [...document.querySelectorAll('.poster-card img, .homepage-viewer img, .icon-showcase img, .other-card-deck img, .wide-work-scroll img')];
+const lightboxTargets = [...document.querySelectorAll('.poster-preview img, .homepage-viewer img, .icon-showcase img, .other-card-deck img, .wide-work-scroll img')];
 const finePointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
 const calibrationPanel = document.querySelector('.calibration-panel');
 const saveShotButton = document.querySelector('[data-save-shot]');
@@ -358,19 +358,29 @@ lightboxTargets.forEach((image, index) => {
   });
 });
 
-posterStacks.forEach((stack) => {
-  const cards = [...stack.querySelectorAll('.poster-card')];
-  stack.addEventListener('pointermove', (event) => {
-    if (!finePointerQuery.matches) return;
-    const rect = stack.getBoundingClientRect();
-    const progress = THREE.MathUtils.clamp((event.clientX - rect.left) / Math.max(rect.width, 1), 0, 0.999);
-    const focusedIndex = Math.floor(progress * cards.length);
-    stack.classList.add('has-focus');
-    cards.forEach((card, index) => card.classList.toggle('is-focused', index === focusedIndex));
-  }, { passive: true });
-  stack.addEventListener('pointerleave', () => {
-    stack.classList.remove('has-focus');
-    cards.forEach((card) => card.classList.remove('is-focused'));
+posterGalleries.forEach((gallery) => {
+  const previewImage = gallery.querySelector('.poster-preview img');
+  const previewCaption = gallery.querySelector('.poster-preview figcaption');
+  const thumbnails = [...gallery.querySelectorAll('[data-poster-src]')];
+
+  const selectPoster = (button) => {
+    if (!previewImage || !button) return;
+    const thumbnailImage = button.querySelector('img');
+    previewImage.src = thumbnailImage?.currentSrc || thumbnailImage?.src || button.dataset.posterSrc;
+    previewImage.alt = button.dataset.posterAlt || '海报作品';
+    if (previewCaption) previewCaption.textContent = button.dataset.posterLabel || '';
+    thumbnails.forEach((thumbnail) => {
+      const active = thumbnail === button;
+      thumbnail.classList.toggle('is-active', active);
+      thumbnail.setAttribute('aria-pressed', String(active));
+    });
+  };
+
+  thumbnails.forEach((button) => {
+    button.addEventListener('pointerenter', () => {
+      if (finePointerQuery.matches) selectPoster(button);
+    });
+    button.addEventListener('click', () => selectPoster(button));
   });
 });
 
