@@ -47,8 +47,15 @@ const copyAdjustButtons = [...document.querySelectorAll('[data-copy-adjust]')];
 const confirmCopyButton = document.querySelector('[data-copy-confirm]');
 const resetCopyButton = document.querySelector('[data-copy-reset]');
 const publicAsset = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
-const officeSceneModelPath = publicAsset('office-avatar-v5.glb');
-const bookcaseModelPath = publicAsset('office-bookcase-v4.glb');
+const prefersLightweightScene =
+  window.matchMedia('(max-width: 720px)').matches ||
+  window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+const officeSceneModelPath = publicAsset(
+  prefersLightweightScene ? 'office-avatar-mobile-v1.glb' : 'office-avatar-v5.glb',
+);
+const bookcaseModelPath = publicAsset(
+  prefersLightweightScene ? 'office-bookcase-mobile-v1.glb' : 'office-bookcase-v4.glb',
+);
 const createModelLoader = () => {
   const loader = new GLTFLoader();
   loader.setMeshoptDecoder(MeshoptDecoder);
