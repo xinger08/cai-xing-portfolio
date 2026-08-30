@@ -2,6 +2,7 @@ import './styles.css';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 
 const canvas = document.querySelector('#avatar-canvas');
 const loadingScreen = document.querySelector('[data-loading-screen]');
@@ -46,8 +47,13 @@ const copyAdjustButtons = [...document.querySelectorAll('[data-copy-adjust]')];
 const confirmCopyButton = document.querySelector('[data-copy-confirm]');
 const resetCopyButton = document.querySelector('[data-copy-reset]');
 const publicAsset = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
-const officeSceneModelPath = publicAsset('office-avatar-v3.glb');
-const bookcaseModelPath = publicAsset('office-bookcase-v2.glb');
+const officeSceneModelPath = publicAsset('office-avatar-v5.glb');
+const bookcaseModelPath = publicAsset('office-bookcase-v4.glb');
+const createModelLoader = () => {
+  const loader = new GLTFLoader();
+  loader.setMeshoptDecoder(MeshoptDecoder);
+  return loader;
+};
 const bookcaseMoveButtons = [...document.querySelectorAll('[data-bookcase-move]')];
 const bookcaseStepButtons = [...document.querySelectorAll('[data-bookcase-step]')];
 const resetBookcaseButton = document.querySelector('[data-bookcase-reset]');
@@ -1729,9 +1735,15 @@ async function addSceneToDisplay() {
 
 async function loadImportedOfficeScene() {
   return new Promise((resolve) => {
-    const loader = new GLTFLoader();
-    loader.load(
-      officeSceneModelPath,
+    let attempts = 0;
+    const load = () => {
+      const loader = createModelLoader();
+      const modelUrl = attempts === 0
+        ? officeSceneModelPath
+        : `${officeSceneModelPath}?retry=${Date.now().toString(36)}`;
+      attempts += 1;
+      loader.load(
+      modelUrl,
       (gltf) => {
         const model = gltf.scene;
         model.name = 'imported-office-scene-source';
@@ -1749,8 +1761,16 @@ async function loadImportedOfficeScene() {
       (event) => {
         if (event.total > 0) setLoadingProgress(4 + (event.loaded / event.total) * 66, '正在加载人物场景');
       },
-      () => resolve(null)
+      () => {
+        if (attempts < 2) {
+          window.setTimeout(load, 900);
+        } else {
+          resolve(null);
+        }
+      }
     );
+    };
+    load();
   });
 }
 
@@ -1784,9 +1804,15 @@ async function addBookcaseToScene() {
 
 async function loadImportedBookcase() {
   return new Promise((resolve) => {
-    const loader = new GLTFLoader();
-    loader.load(
-      bookcaseModelPath,
+    let attempts = 0;
+    const load = () => {
+      const loader = createModelLoader();
+      const modelUrl = attempts === 0
+        ? bookcaseModelPath
+        : `${bookcaseModelPath}?retry=${Date.now().toString(36)}`;
+      attempts += 1;
+      loader.load(
+      modelUrl,
       (gltf) => {
         const model = gltf.scene;
         model.name = 'imported-bookcase-source';
@@ -1795,8 +1821,16 @@ async function loadImportedBookcase() {
       (event) => {
         if (event.total > 0) setLoadingProgress(72 + (event.loaded / event.total) * 25, '正在加载空间陈设');
       },
-      () => resolve(null)
+      () => {
+        if (attempts < 2) {
+          window.setTimeout(load, 900);
+        } else {
+          resolve(null);
+        }
+      }
     );
+    };
+    load();
   });
 }
 
@@ -2048,7 +2082,7 @@ async function loadProductionHeadAvatar() {
   }
 
   return new Promise((resolve) => {
-    const loader = new GLTFLoader();
+    const loader = createModelLoader();
     loader.load(
       officeSceneModelPath,
       (gltf) => {
@@ -2269,7 +2303,7 @@ async function loadProductionAvatar() {
   }
 
   return new Promise((resolve) => {
-    const loader = new GLTFLoader();
+    const loader = createModelLoader();
     loader.load(
       officeSceneModelPath,
       (gltf) => {
