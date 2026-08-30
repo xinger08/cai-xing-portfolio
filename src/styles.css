@@ -19,7 +19,7 @@ body,
 body {
   overflow: hidden;
   background: #f4f6f5;
-  cursor: url("/cursor-default.svg") 12 3, auto;
+  cursor: url("../public/cursor-default.svg") 12 3, auto;
 }
 
 .hero {
@@ -297,11 +297,11 @@ body {
 
 button,
 button * {
-  cursor: url("/cursor-pointer.svg") 12 3, pointer;
+  cursor: url("../public/cursor-pointer.svg") 12 3, pointer;
 }
 
 .nav-item {
-  cursor: url("/cursor-pointer.svg") 12 3, pointer;
+  cursor: url("../public/cursor-pointer.svg") 12 3, pointer;
 }
 
 .nav-item:hover {
@@ -890,7 +890,7 @@ button * {
   transform: translate(calc(-50% + var(--deck-x)), -50%) rotate(var(--deck-r));
   transition: transform 280ms cubic-bezier(.2,.75,.2,1), filter 220ms ease, opacity 220ms ease, box-shadow 240ms ease;
   pointer-events: auto;
-  cursor: url("/cursor-pointer.svg") 12 3, pointer;
+  cursor: url("../public/cursor-pointer.svg") 12 3, pointer;
 }
 
 .other-card-deck figure.is-focused { z-index: 8; box-shadow: 0 36px 78px rgba(22, 30, 35, .34); transform: translate(-50%, -52%) rotate(0) scale(1.07); }
@@ -1031,7 +1031,7 @@ button * {
     transform 300ms cubic-bezier(.2,.75,.2,1),
     box-shadow 260ms ease;
   pointer-events: auto;
-  cursor: url("/cursor-pointer.svg") 12 3, pointer;
+  cursor: url("../public/cursor-pointer.svg") 12 3, pointer;
 }
 
 .poster-card img {
@@ -1768,12 +1768,12 @@ button * {
   display: block;
   width: 100%;
   height: 100%;
-  cursor: url("/cursor-default.svg") 12 3, grab;
+  cursor: url("../public/cursor-default.svg") 12 3, grab;
   touch-action: none;
 }
 
 #avatar-canvas:active {
-  cursor: url("/cursor-default.svg") 12 3, grabbing;
+  cursor: url("../public/cursor-default.svg") 12 3, grabbing;
 }
 
 .site-cursor {
