@@ -31,12 +31,16 @@ const otherScreens = [...document.querySelectorAll('[data-other-screen]')];
 const otherPanel = document.querySelector('.other-panel');
 const otherScreenButtons = [...document.querySelectorAll('[data-other-target]')];
 const otherCardDecks = [...document.querySelectorAll('.other-card-deck')];
+const aiScreens = [...document.querySelectorAll('[data-ai-screen]')];
+const aiPanel = document.querySelector('.ai-panel');
+const aiScreenButtons = [...document.querySelectorAll('[data-ai-target]')];
+const aiGalleries = [...document.querySelectorAll('[data-ai-gallery]')];
 const contactHomeButton = document.querySelector('[data-contact-home]');
 const imageLightbox = document.querySelector('[data-image-lightbox]');
 const lightboxImage = document.querySelector('[data-lightbox-image]');
 const lightboxCaption = document.querySelector('[data-lightbox-caption]');
 const lightboxCloseButton = document.querySelector('[data-lightbox-close]');
-const lightboxTargets = [...document.querySelectorAll('.poster-preview img, .homepage-viewer img, .icon-showcase img, .other-card-deck img, .wide-work-scroll img')];
+const lightboxTargets = [...document.querySelectorAll('.poster-preview img, .homepage-viewer img, .icon-showcase img, .other-card-deck img, .wide-work-scroll img, .ai-preview img')];
 const finePointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
 const calibrationPanel = document.querySelector('.calibration-panel');
 const saveShotButton = document.querySelector('[data-save-shot]');
@@ -137,6 +141,7 @@ let experienceScreenIndex = 0;
 let portfolioScreenIndex = 0;
 let homepageScreenIndex = 0;
 let otherScreenIndex = 0;
+let aiScreenIndex = 0;
 let transition = null;
 let animatedHead = null;
 let animatedHeadBase = null;
@@ -209,6 +214,11 @@ const storyboardShots = {
       duration: 1160,
     },
     {
+      camera: [-5.45, 3.25, 7.4],
+      target: [2.15, 0.82, 0.15],
+      duration: 1240,
+    },
+    {
       camera: [-0.543, 4.732, 4.753],
       target: [1.062, 0.481, -0.752],
       duration: 1300,
@@ -246,6 +256,11 @@ const storyboardShots = {
       duration: 1160,
     },
     {
+      camera: [-4.8, 3.05, 8.2],
+      target: [1.8, 0.86, 0.1],
+      duration: 1240,
+    },
+    {
       camera: [-0.543, 4.732, 4.753],
       target: [1.062, 0.481, -0.752],
       duration: 1300,
@@ -268,6 +283,7 @@ setExperienceScreen(0);
 setPortfolioScreen(0);
 setHomepageScreen(0);
 setOtherScreen(0);
+setAiScreen(0);
 renderShotOutput();
 
 navButtons.forEach((button) => {
@@ -289,6 +305,9 @@ navButtons.forEach((button) => {
       }
       if (nextIndex === 5) {
         setOtherScreen(0);
+      }
+      if (nextIndex === 6) {
+        setAiScreen(0);
       }
       transitionToShot(nextIndex);
     }
@@ -361,6 +380,18 @@ otherScreenButtons.forEach((button) => {
   });
 });
 
+aiPanel?.addEventListener('click', (event) => {
+  if (shotIndex !== 6 || event.target.closest('button, a, input, textarea, select, .ai-gallery')) return;
+  advancePage();
+});
+
+aiScreenButtons.forEach((button) => {
+  button.addEventListener('click', (event) => {
+    event.stopPropagation();
+    setAiScreen(Number(button.dataset.aiTarget));
+  });
+});
+
 contactHomeButton?.addEventListener('click', (event) => {
   event.stopPropagation();
   transitionToShot(0);
@@ -419,6 +450,34 @@ posterGalleries.forEach((gallery) => {
       if (finePointerQuery.matches) selectPoster(button);
     });
     button.addEventListener('click', () => selectPoster(button));
+  });
+});
+
+aiGalleries.forEach((gallery) => {
+  const previewImage = gallery.querySelector('.ai-preview img');
+  const previewCaption = gallery.querySelector('.ai-preview figcaption');
+  const thumbnails = [...gallery.querySelectorAll('[data-ai-src]')];
+
+  const selectAiImage = (button) => {
+    if (!previewImage || !button) return;
+    previewImage.src = button.dataset.aiSrc;
+    previewImage.alt = button.dataset.aiAlt || 'AI项目界面';
+    if (previewCaption) previewCaption.textContent = button.dataset.aiLabel || '';
+    thumbnails.forEach((thumbnail) => {
+      const active = thumbnail === button;
+      thumbnail.classList.toggle('is-active', active);
+      thumbnail.setAttribute('aria-pressed', String(active));
+    });
+  };
+
+  thumbnails.forEach((button) => {
+    button.addEventListener('pointerenter', () => {
+      if (finePointerQuery.matches) selectAiImage(button);
+    });
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      selectAiImage(button);
+    });
   });
 });
 
@@ -2806,6 +2865,21 @@ function setOtherScreen(index) {
   });
 }
 
+function setAiScreen(index) {
+  resetPanelScroll(aiPanel);
+  aiScreenIndex = THREE.MathUtils.euclideanModulo(index, Math.max(aiScreens.length, 1));
+  aiScreens.forEach((screen, screenIndex) => {
+    const isActive = screenIndex === aiScreenIndex;
+    screen.classList.toggle('is-active', isActive);
+    screen.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+  });
+  aiScreenButtons.forEach((button) => {
+    const isActive = Number(button.dataset.aiTarget) === aiScreenIndex;
+    button.classList.toggle('is-active', isActive);
+    button.setAttribute('aria-current', isActive ? 'true' : 'false');
+  });
+}
+
 function resetPanelScroll(panel) {
   const scroller = panel?.querySelector('.panel-inner');
   if (scroller) scroller.scrollTop = 0;
@@ -2862,7 +2936,13 @@ function advancePage() {
   }
 
   if (shotIndex === 5 && otherScreenIndex === otherScreens.length - 1) {
+    setAiScreen(0);
     transitionToShot(6);
+    return;
+  }
+
+  if (shotIndex === 6 && aiScreenIndex < aiScreens.length - 1) {
+    setAiScreen(aiScreenIndex + 1);
     return;
   }
 
@@ -2881,6 +2961,9 @@ function advancePage() {
   }
   if (nextIndex === 5) {
     setOtherScreen(0);
+  }
+  if (nextIndex === 6) {
+    setAiScreen(0);
   }
   transitionToShot(nextIndex);
 }
@@ -2931,8 +3014,16 @@ function retreatPage() {
   }
 
   if (shotIndex === 6) {
-    setOtherScreen(Math.max(otherScreens.length - 1, 0));
-    transitionToShot(5);
+    if (aiScreenIndex > 0) setAiScreen(aiScreenIndex - 1);
+    else {
+      setOtherScreen(Math.max(otherScreens.length - 1, 0));
+      transitionToShot(5);
+    }
+    return;
+  }
+
+  if (shotIndex === 7) {
+    transitionToShot(6);
   }
 }
 

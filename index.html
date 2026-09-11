@@ -48,14 +48,18 @@
             <span class="nav-glyph nav-glyph-other" aria-hidden="true"><span class="other-icon"></span></span>
             <span class="nav-label">其他相关</span>
           </button>
-          <button class="nav-item" type="button" data-shot-nav="6" aria-label="联系我">
+          <button class="nav-item" type="button" data-shot-nav="6" aria-label="AI相关">
+            <span class="nav-glyph nav-glyph-ai" aria-hidden="true"><span class="ai-icon">AI</span></span>
+            <span class="nav-label">AI相关</span>
+          </button>
+          <button class="nav-item" type="button" data-shot-nav="7" aria-label="联系我">
             <span class="nav-glyph nav-glyph-contact" aria-hidden="true"><span class="contact-icon"></span></span>
             <span class="nav-label">联系我</span>
           </button>
         </nav>
         <div class="hero-copy" aria-label="个人简历信息">
           <h1>蔡星</h1>
-          <p>更新日期2026.08.30</p>
+          <p>更新日期2026.09.11</p>
         </div>
         <article class="page-panel about-panel is-hidden" data-page-panel="1" aria-label="关于我" aria-hidden="true">
           <div class="panel-inner">
@@ -364,10 +368,69 @@
             </section>
           </div>
         </article>
-        <article class="page-panel contact-panel is-hidden" data-page-panel="6" aria-label="联系我" aria-hidden="true">
+        <article class="page-panel ai-panel is-hidden" data-page-panel="6" aria-label="AI相关" aria-hidden="true">
+          <div class="panel-inner">
+            <section class="ai-screen is-active" data-ai-screen="0">
+              <header class="ai-header">
+                <span>AI WORKFLOW · 01</span>
+                <h2>AI详情页批量套版工具</h2>
+                <p>借助 Codex 开发，将重复制作转化为可配置、可批量执行的视觉工作流。</p>
+              </header>
+              <div class="ai-project">
+                <div class="ai-copy">
+                  <span>PROJECT OVERVIEW</span>
+                  <p>这是一款由我借助 Codex 开发的详情页批量套版工具，主要用于解决多品牌、多模板和多素材场景下重复制作效率较低的问题。通过自动解析 PSD/PSB 源文件、识别图层结构并执行批量套版，可将详情页制作效率提升 50% 以上。</p>
+                  <ul>
+                    <li><b>独立规则</b><em>为单个 PSD/PSB 设置专属 AI 指令</em></li>
+                    <li><b>品牌适配</b><em>按不同品牌的视觉逻辑完成套版</em></li>
+                    <li><b>智能执行</b><em>判断素材、尺寸、裁剪及图层顺序</em></li>
+                  </ul>
+                </div>
+                <div class="ai-gallery" data-ai-gallery>
+                  <figure class="ai-preview"><img src="ai/ai-tool-01.png" alt="批量套版工作站界面" loading="lazy" decoding="async"><figcaption>批量套版工作站</figcaption></figure>
+                  <div class="ai-thumbnails" aria-label="套版工具界面缩略图">
+                    <button type="button" class="is-active" data-ai-src="ai/ai-tool-01.png" data-ai-alt="批量套版工作站界面" data-ai-label="批量套版工作站"><img src="ai/ai-tool-01.png" alt="批量套版缩略图"></button>
+                    <button type="button" data-ai-src="ai/ai-tool-02.png" data-ai-alt="PSD解析工作台界面" data-ai-label="PSD解析工作台"><img src="ai/ai-tool-02.png" alt="PSD解析缩略图" loading="lazy"></button>
+                    <button type="button" data-ai-src="ai/ai-tool-03.png" data-ai-alt="云端AI设置界面" data-ai-label="云端AI设置"><img src="ai/ai-tool-03.png" alt="云端AI缩略图" loading="lazy"></button>
+                    <button type="button" data-ai-src="ai/ai-tool-04.png" data-ai-alt="PSD源文件AI规则界面" data-ai-label="PSD规则设置"><img src="ai/ai-tool-04.png" alt="PSD规则缩略图" loading="lazy"></button>
+                  </div>
+                </div>
+              </div>
+              <div class="ai-foot"><div class="screen-switch" aria-label="AI项目分屏"><button type="button" data-ai-target="0">01</button><button type="button" data-ai-target="1">02</button></div><span>01 / 02</span></div>
+            </section>
+            <section class="ai-screen" data-ai-screen="1" aria-hidden="true">
+              <header class="ai-header">
+                <span>AI WORKFLOW · 02</span>
+                <h2>电商视觉组长工作台</h2>
+                <p>借助 WorkBuddy 搭建，让日常管理、问题闭环与竞店素材沉淀形成统一工作流。</p>
+              </header>
+              <div class="ai-project">
+                <div class="ai-copy">
+                  <span>PROJECT OVERVIEW</span>
+                  <p>这是一款由我借助 WorkBuddy 搭建的电商视觉组长工作台，用于统一记录日常工作问题、解决方案及工作计划，并对处理状态进行持续跟进。平台还可自动截取竞店首页和商品详情页，按照店铺及素材类型分类保存至对应素材库，为竞品分析、视觉复盘和设计参考提供支持。后续将结合实际工作需求，持续优化功能模块与操作流程。</p>
+                  <ul>
+                    <li><b>问题闭环</b><em>记录问题、解决方案及处理状态</em></li>
+                    <li><b>计划管理</b><em>统一整理日常任务与阶段计划</em></li>
+                    <li><b>竞店采集</b><em>自动截图、分类并保存竞店素材</em></li>
+                  </ul>
+                </div>
+                <div class="ai-gallery" data-ai-gallery>
+                  <figure class="ai-preview"><img src="ai/workbuddy-01.png" alt="竞店问题统计工作台界面" loading="lazy" decoding="async"><figcaption>问题统计与分析</figcaption></figure>
+                  <div class="ai-thumbnails" aria-label="WorkBuddy工作台界面缩略图">
+                    <button type="button" class="is-active" data-ai-src="ai/workbuddy-01.png" data-ai-alt="竞店问题统计工作台界面" data-ai-label="问题统计与分析"><img src="ai/workbuddy-01.png" alt="问题统计缩略图"></button>
+                    <button type="button" data-ai-src="ai/workbuddy-02.png" data-ai-alt="每日工作计划界面" data-ai-label="每日工作计划"><img src="ai/workbuddy-02.png" alt="工作计划缩略图" loading="lazy"></button>
+                    <button type="button" data-ai-src="ai/workbuddy-03.png" data-ai-alt="竞店自动截图工具界面" data-ai-label="竞店自动截图"><img src="ai/workbuddy-03.png" alt="竞店截图缩略图" loading="lazy"></button>
+                  </div>
+                </div>
+              </div>
+              <div class="ai-foot"><div class="screen-switch" aria-label="AI项目分屏"><button type="button" data-ai-target="0">01</button><button type="button" data-ai-target="1">02</button></div><span>02 / 02 · 再次点击场景进入下一页</span></div>
+            </section>
+          </div>
+        </article>
+        <article class="page-panel contact-panel is-hidden" data-page-panel="7" aria-label="联系我" aria-hidden="true">
           <div class="panel-inner">
             <div class="contact-lead">
-              <div class="contact-eyebrow">LET'S WORK TOGETHER · 07</div>
+              <div class="contact-eyebrow">LET'S WORK TOGETHER · 08</div>
               <h2>联系我</h2>
               <p class="contact-intro">期待与你一起，完成更有价值的设计。</p>
             </div>

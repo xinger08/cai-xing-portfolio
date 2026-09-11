@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/cai-xing-portfolio/',
+  base: './',
   server: {
     watch: {
       ignored: ['**/work/**', '**/qa/**', '**/dist/**'],
